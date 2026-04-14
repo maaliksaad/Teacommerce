@@ -22,6 +22,7 @@ import Orders from './pages/admin/Orders';
 import Users from './pages/admin/Users';
 import ProductForm from './pages/admin/ProductForm';
 import Profile from './pages/Profile';
+import ServerWarningModal from './components/common/ServerWarningModal';
 
 const App = () => {
   // Initialize real-time notifications
@@ -29,6 +30,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <ServerWarningModal />
       <Navbar />
       <main className="flex-1 max-w-container ">
         <Routes>
