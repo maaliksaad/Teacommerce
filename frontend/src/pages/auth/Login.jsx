@@ -33,6 +33,10 @@ export default function Login() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
+
+  const fillDemoData = (email, password) => {
+    setFormData({ email, password });
+  };
   return (
     <div className="flex items-center justify-center mt-10">
       <div
@@ -80,6 +84,35 @@ export default function Login() {
         <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
           Don't have an account? <Link to="/signup" className="underline text-blue-500">Sign up</Link>
         </p>
+
+        <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+          <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-3">
+            Demo Accounts:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+            <button
+              type="button"
+              onClick={() => fillDemoData('user@teacommerce.com', 'test@g.com')}
+              className="px-4 py-2 text-xs font-medium bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded transition-colors"
+            >
+              User
+            </button>
+            <button
+              type="button"
+              onClick={() => fillDemoData('admin@teacommerce.com', 'saad@test.com')}
+              className="px-4 py-2 text-xs font-medium bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded transition-colors"
+            >
+              Admin
+            </button>
+            <button
+              type="button"
+              onClick={() => fillDemoData('superadmin@teacommerce.com', 'admin123')}
+              className="px-4 py-2 text-xs font-medium bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded transition-colors"
+            >
+              Superadmin
+            </button>
+          </div>
+        </div>
       </form>
     </div>
     </div>
