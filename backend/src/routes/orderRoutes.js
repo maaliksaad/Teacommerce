@@ -44,7 +44,7 @@ router.use(authMiddleware);
  *       201:
  *         description: Order placed successfully
  */
-router.post('/', orderController.placeOrder);
+router.post('/', roleMiddleware('user'), orderController.placeOrder);
 
 /**
  * @swagger
@@ -67,7 +67,7 @@ router.post('/', orderController.placeOrder);
  *       200:
  *         description: Orders retrieved successfully
  */
-router.get('/', orderController.getUserOrders);
+router.get('/', roleMiddleware('user'), orderController.getUserOrders);
 
 /**
  * @swagger

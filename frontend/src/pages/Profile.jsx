@@ -192,75 +192,77 @@ const Profile = () => {
         </div>
 
         {/* Order History */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ShoppingBag className="h-5 w-5" />
-              Order History
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {ordersLoading ? (
-              <p className="text-muted-foreground">Loading orders...</p>
-            ) : ordersData?.orders?.length > 0 ? (
-              <div className="space-y-4">
-                {ordersData.orders.map((order) => (
-                  <Card key={order._id} className="border-muted">
-                    <CardContent className="pt-4">
-                      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
-                        <div>
-                          <p className="font-medium">Order #{order._id.slice(-8)}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(order.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <p className="font-medium">€{order.totalAmount.toFixed(2)}</p>
-                          <Badge variant={getStatusBadgeVariant(order.orderStatus)}>
-                            {order.orderStatus.charAt(0).toUpperCase() + order.orderStatus.slice(1)}
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2 mb-4">
-                        {order.items?.map((item, index) => (
-                          <div key={index} className="flex justify-between text-sm">
-                            <span>{item.productId?.name || 'Product'} x{item.quantity}</span>
-                            <span>€{(item.priceAtOrderTime * item.quantity).toFixed(2)}</span>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      <div className="pt-4 border-t border-muted space-y-2">
-                        <div className="flex items-start gap-2 text-sm">
-                          <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
+        {user?.role === 'user' && (
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ShoppingBag className="h-5 w-5" />
+                Order History
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {ordersLoading ? (
+                <p className="text-muted-foreground">Loading orders...</p>
+              ) : ordersData?.orders?.length > 0 ? (
+                <div className="space-y-4">
+                  {ordersData.orders.map((order) => (
+                    <Card key={order._id} className="border-muted">
+                      <CardContent className="pt-4">
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                           <div>
-                            <span className="font-medium">Shipping: </span>
-                            <span className="text-muted-foreground">
-                              {order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}
+                            <p className="font-medium">Order #{order._id.slice(-8)}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {new Date(order.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <p className="font-medium">€{order.totalAmount.toFixed(2)}</p>
+                            <Badge variant={getStatusBadgeVariant(order.orderStatus)}>
+                              {order.orderStatus.charAt(0).toUpperCase() + order.orderStatus.slice(1)}
+                            </Badge>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2 mb-4">
+                          {order.items?.map((item, index) => (
+                            <div key={index} className="flex justify-between text-sm">
+                              <span>{item.productId?.name || 'Product'} x{item.quantity}</span>
+                              <span>€{(item.priceAtOrderTime * item.quantity).toFixed(2)}</span>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="pt-4 border-t border-muted space-y-2">
+                          <div className="flex items-start gap-2 text-sm">
+                            <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
+                            <div>
+                              <span className="font-medium">Shipping: </span>
+                              <span className="text-muted-foreground">
+                                {order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CreditCard className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">Payment: </span>
+                            <span className="text-muted-foreground capitalize">
+                              {order.paymentMethod.replace('_', ' ')} - {order.paymentStatus}
                             </span>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <CreditCard className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">Payment: </span>
-                          <span className="text-muted-foreground capitalize">
-                            {order.paymentMethod.replace('_', ' ')} - {order.paymentStatus}
-                          </span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <ShoppingBag className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                <p className="text-muted-foreground">No orders found.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <ShoppingBag className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-muted-foreground">No orders found.</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

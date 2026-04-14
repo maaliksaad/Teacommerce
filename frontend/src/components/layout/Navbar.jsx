@@ -191,36 +191,38 @@ const Navbar = () => {
               Sign In
             </Button>
           )}
-          <Button 
-            variant="ghost" 
-            size="icon"
-            onClick={() => {
-              if (isAuthenticated()) {
-                setCartOpen(true);
-              } else {
-                navigate('/login');
-              }
-            }}
-            className="relative"
-          >
-            <svg
-              width="18"
-              height="21"
-              viewBox="0 0 18 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {(!isAuthenticated() || (user?.role !== 'admin' && user?.role !== 'superadmin')) && (
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => {
+                if (isAuthenticated()) {
+                  setCartOpen(true);
+                } else {
+                  navigate('/login');
+                }
+              }}
+              className="relative"
             >
-              <path
-                d="M2 21C1.45 21 0.979 20.8043 0.587 20.413C0.195667 20.021 0 19.55 0 19V7C0 6.45 0.195667 5.97933 0.587 5.588C0.979 5.196 1.45 5 2 5H4C4 3.61667 4.48767 2.43733 5.463 1.462C6.43767 0.487333 7.61667 0 9 0C10.3833 0 11.5627 0.487333 12.538 1.462C13.5127 2.43733 14 3.61667 14 5H16C16.55 5 17.021 5.196 17.413 5.588C17.8043 5.97933 18 6.45 18 7V19C18 19.55 17.8043 20.021 17.413 20.413C17.021 20.8043 16.55 21 16 21H2ZM2 19H16V7H2V19ZM9 13C10.3833 13 11.5627 12.5123 12.538 11.537C13.5127 10.5623 14 9.38333 14 8H12C12 8.83333 11.7083 9.54167 11.125 10.125C10.5417 10.7083 9.83333 11 9 11C8.16667 11 7.45833 10.7083 6.875 10.125C6.29167 9.54167 6 8.83333 6 8H4C4 9.38333 4.48767 10.5623 5.463 11.537C6.43767 12.5123 7.61667 13 9 13ZM6 5H12C12 4.16667 11.7083 3.45833 11.125 2.875C10.5417 2.29167 9.83333 2 9 2C8.16667 2 7.45833 2.29167 6.875 2.875C6.29167 3.45833 6 4.16667 6 5Z"
-                fill="currentColor"
-              />
-            </svg>
-            {isAuthenticated() && cartItemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {cartItemCount}
-              </span>
-            )}
-          </Button>
+              <svg
+                width="18"
+                height="21"
+                viewBox="0 0 18 21"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 21C1.45 21 0.979 20.8043 0.587 20.413C0.195667 20.021 0 19.55 0 19V7C0 6.45 0.195667 5.97933 0.587 5.588C0.979 5.196 1.45 5 2 5H4C4 3.61667 4.48767 2.43733 5.463 1.462C6.43767 0.487333 7.61667 0 9 0C10.3833 0 11.5627 0.487333 12.538 1.462C13.5127 2.43733 14 3.61667 14 5H16C16.55 5 17.021 5.196 17.413 5.588C17.8043 5.97933 18 6.45 18 7V19C18 19.55 17.8043 20.021 17.413 20.413C17.021 20.8043 16.55 21 16 21H2ZM2 19H16V7H2V19ZM9 13C10.3833 13 11.5627 12.5123 12.538 11.537C13.5127 10.5623 14 9.38333 14 8H12C12 8.83333 11.7083 9.54167 11.125 10.125C10.5417 10.7083 9.83333 11 9 11C8.16667 11 7.45833 10.7083 6.875 10.125C6.29167 9.54167 6 8.83333 6 8H4C4 9.38333 4.48767 10.5623 5.463 11.537C6.43767 12.5123 7.61667 13 9 13ZM6 5H12C12 4.16667 11.7083 3.45833 11.125 2.875C10.5417 2.29167 9.83333 2 9 2C8.16667 2 7.45833 2.29167 6.875 2.875C6.29167 3.45833 6 4.16667 6 5Z"
+                  fill="currentColor"
+                />
+              </svg>
+              {isAuthenticated() && cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </Button>
+          )}
         </div>
         {isAuthenticated() && (
           <Cart 
@@ -379,41 +381,40 @@ const Navbar = () => {
             </Button>
           )}
           <div className="flex items-start justify-start">
-<Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => {
-              handleToggle();
-              if (isAuthenticated()) {
-                setCartOpen(true);
-              } else {
-                navigate('/login');
-              }
-            }}
-            className="relative"
-          >
-            <svg
-              width="18"
-              height="21"
-              viewBox="0 0 18 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M2 21C1.45 21 0.979 20.8043 0.587 20.413C0.195667 20.021 0 19.55 0 19V7C0 6.45 0.195667 5.97933 0.587 5.588C0.979 5.196 1.45 5 2 5H4C4 3.61667 4.48767 2.43733 5.463 1.462C6.43767 0.487333 7.61667 0 9 0C10.3833 0 11.5627 0.487333 12.538 1.462C13.5127 2.43733 14 3.61667 14 5H16C16.55 5 17.021 5.196 17.413 5.588C17.8043 5.97933 18 6.45 18 7V19C18 19.55 17.8043 20.021 17.413 20.413C17.021 20.8043 16.55 21 16 21H2ZM2 19H16V7H2V19ZM9 13C10.3833 13 11.5627 12.5123 12.538 11.537C13.5127 10.5623 14 9.38333 14 8H12C12 8.83333 11.7083 9.54167 11.125 10.125C10.5417 10.7083 9.83333 11 9 11C8.16667 11 7.45833 10.7083 6.875 10.125C6.29167 9.54167 6 8.83333 6 8H4C4 9.38333 4.48767 10.5623 5.463 11.537C6.43767 12.5123 7.61667 13 9 13ZM6 5H12C12 4.16667 11.7083 3.45833 11.125 2.875C10.5417 2.29167 9.83333 2 9 2C8.16667 2 7.45833 2.29167 6.875 2.875C6.29167 3.45833 6 4.16667 6 5Z"
-                fill="currentColor"
-              />
-            </svg>
-            <div className="flex flex-col ml-2 items-start justify-start">
-  <span  >Your Bag</span>
-  {isAuthenticated() && cartItemCount > 0 && (
-  <span className="font-normal text-sm text-gray-400 dark:text-foreground"> <span className="text-yellow-800">{cartItemCount}</span> products added in your bag</span>
-              
+            {(!isAuthenticated() || (user?.role !== 'admin' && user?.role !== 'superadmin')) && (
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => {
+                  handleToggle();
+                  if (isAuthenticated()) {
+                    setCartOpen(true);
+                  } else {
+                    navigate('/login');
+                  }
+                }}
+                className="relative"
+              >
+                <svg
+                  width="18"
+                  height="21"
+                  viewBox="0 0 18 21"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 21C1.45 21 0.979 20.8043 0.587 20.413C0.195667 20.021 0 19.55 0 19V7C0 6.45 0.195667 5.97933 0.587 5.588C0.979 5.196 1.45 5 2 5H4C4 3.61667 4.48767 2.43733 5.463 1.462C6.43767 0.487333 7.61667 0 9 0C10.3833 0 11.5627 0.487333 12.538 1.462C13.5127 2.43733 14 3.61667 14 5H16C16.55 5 17.021 5.196 17.413 5.588C17.8043 5.97933 18 6.45 18 7V19C18 19.55 17.8043 20.021 17.413 20.413C17.021 20.8043 16.55 21 16 21H2ZM2 19H16V7H2V19ZM9 13C10.3833 13 11.5627 12.5123 12.538 11.537C13.5127 10.5623 14 9.38333 14 8H12C12 8.83333 11.7083 9.54167 11.125 10.125C10.5417 10.7083 9.83333 11 9 11C8.16667 11 7.45833 10.7083 6.875 10.125C6.29167 9.54167 6 8.83333 6 8H4C4 9.38333 4.48767 10.5623 5.463 11.537C6.43767 12.5123 7.61667 13 9 13ZM6 5H12C12 4.16667 11.7083 3.45833 11.125 2.875C10.5417 2.29167 9.83333 2 9 2C8.16667 2 7.45833 2.29167 6.875 2.875C6.29167 3.45833 6 4.16667 6 5Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <div className="flex flex-col ml-2 items-start justify-start">
+                  <span>Your Bag</span>
+                  {isAuthenticated() && cartItemCount > 0 && (
+                    <span className="font-normal text-sm text-gray-400 dark:text-foreground"> <span className="text-yellow-800">{cartItemCount}</span> products added in your bag</span>
+                  )}
+                </div>
+              </Button>
             )}
-</div>
-          
-            
-          </Button>
           </div>
           
           </div>

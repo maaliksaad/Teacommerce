@@ -1,16 +1,28 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart, useUpdateCartItem, useRemoveCartItem } from '../../hooks/useCart';
 import { usePlaceOrder } from '../../hooks/useOrders';
 import { useProducts } from '../../hooks/useProducts';
+import useAuthStore from '../../store/authStore';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuthStore();
   const { data: cartData, isLoading: cartLoading } = useCart();
   const updateItemMutation = useUpdateCartItem();
   const removeItemMutation = useRemoveCartItem();
   const placeOrderMutation = usePlaceOrder();
   const { data: productsData } = useProducts({ limit: 3 });
+
+  const isAdmin = isAuthenticated() && (user?.role === 'admin' || user?.role === 'superadmin');
+
+  useEffect(() => {
+    if (isAdmin) {
+      navigate('/');
+    }
+  }, [isAdmin, navigate]);
+
+  if (isAdmin) return null;
 
   const [shippingAddress, setShippingAddress] = useState({
     street: '',

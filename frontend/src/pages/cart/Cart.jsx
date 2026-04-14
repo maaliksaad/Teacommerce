@@ -1,12 +1,16 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart, useUpdateCartItem, useRemoveCartItem } from '../../hooks/useCart';
+import useAuthStore from '../../store/authStore';
 
 export const Cart = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuthStore();
   const { data, isLoading } = useCart();
   const updateItemMutation = useUpdateCartItem();
   const removeItemMutation = useRemoveCartItem();
+
+  const isAdmin = isAuthenticated() && (user?.role === 'admin' || user?.role === 'superadmin');
 
   // Transform cart data
   const cartItems = useMemo(() => {
@@ -52,7 +56,7 @@ export const Cart = ({ isOpen, onClose }) => {
   const delivery = 3.95;
   const total = subtotal + delivery;
 
-  if (!isOpen) return null;
+  if (!isOpen || isAdmin) return null;
 
   return (
     <div className="fixed inset-0 z-50">

@@ -1,4 +1,5 @@
 import { toast } from '../../hooks/useToast';
+import useAuthStore from '../../store/authStore';
 
 const ProductDetails = ({ 
   title, 
@@ -11,6 +12,8 @@ const ProductDetails = ({
   onQuantityChange, 
   onAddToBag 
 }) => {
+  const { user, isAuthenticated } = useAuthStore();
+  const isAdmin = isAuthenticated() && (user?.role === 'admin' || user?.role === 'superadmin');
   const selectedVariantData = variants?.find(v => (v._id || v.id) === selectedVariant);
   const isSelectedVariantOutOfStock = !selectedVariantData || selectedVariantData.stock <= 0;
   const hasLowStock = selectedVariantData && selectedVariantData.stock > 0 && selectedVariantData.stock <= 5;
@@ -183,49 +186,49 @@ const ProductDetails = ({
       )}
 
       {/* Quantity and Add to Cart */}
-      <div className="flex items-center gap-4 mb-8">
-        <div className="flex items-center">
-          <button
-            onClick={() => onQuantityChange(-1)}
-            className="md:px-6 px-2 py-4 hover:bg-gray-100 text-xl font-bold text-[#282828] dark:text-foreground"
-            
-          >
-            −
-          </button>
-          <span className="px-4 py-3 text-lg font-medium text-[#282828] dark:text-foreground" >
-            {quantity}
-          </span>
-          <button
-            onClick={() => onQuantityChange(1)}
-            className="md:px-6 px-2 py-4 hover:bg-gray-100 text-xl font-bold text-[#282828] dark:text-foreground"
-           
-          >
-            +
-          </button>
-        </div>
-        
-        <button 
-          onClick={handleAddToBag}
-          disabled={isSelectedVariantOutOfStock}
-          className={`md:px-20 px-10 py-4 text-white text-sm font-light transition-opacity flex items-center gap-2 ${
-            isSelectedVariantOutOfStock 
-              ? 'bg-gray-400 cursor-not-allowed' 
-              : 'hover:opacity-90'
-          }`}
-          style={!isSelectedVariantOutOfStock ? {backgroundColor: '#282828'} : {}}
-        >
-          <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 15.75C1.0875 15.75 0.73425 15.6033 0.44025 15.3097C0.14675 15.0157 0 14.6625 0 14.25V5.25C0 4.8375 0.14675 4.4845 0.44025 4.191C0.73425 3.897 1.0875 3.75 1.5 3.75H3C3 2.7125 3.36575 1.828 4.09725 1.0965C4.82825 0.3655 5.7125 0 6.75 0C7.7875 0 8.672 0.3655 9.4035 1.0965C10.1345 1.828 10.5 2.7125 10.5 3.75H12C12.4125 3.75 12.7657 3.897 13.0597 4.191C13.3533 4.4845 13.5 4.8375 13.5 5.25V14.25C13.5 14.6625 13.3533 15.0157 13.0597 15.3097C12.7657 15.6033 12.4125 15.75 12 15.75H1.5ZM1.5 14.25H12V5.25H1.5V14.25ZM6.75 9.75C7.7875 9.75 8.672 9.38425 9.4035 8.65275C10.1345 7.92175 10.5 7.0375 10.5 6H9C9 6.625 8.78125 7.15625 8.34375 7.59375C7.90625 8.03125 7.375 8.25 6.75 8.25C6.125 8.25 5.59375 8.03125 5.15625 7.59375C4.71875 7.15625 4.5 6.625 4.5 6H3C3 7.0375 3.36575 7.92175 4.09725 8.65275C4.82825 9.38425 5.7125 9.75 6.75 9.75ZM4.5 3.75H9C9 3.125 8.78125 2.59375 8.34375 2.15625C7.90625 1.71875 7.375 1.5 6.75 1.5C6.125 1.5 5.59375 1.71875 5.15625 2.15625C4.71875 2.59375 4.5 3.125 4.5 3.75Z" fill="white"/>
-          </svg>
-          {isSelectedVariantOutOfStock ? 'OUT OF STOCK - SELECT OTHER SIZE' : 'ADD TO BAG'}
-        </button>
-        
-        {hasLowStock && !isSelectedVariantOutOfStock && (
-          <div className="text-sm text-orange-600 mt-2">
-            ⚠️ Only {selectedVariantData.stock} items left in stock
+      {!isAdmin && (
+        <div className="flex items-center gap-4 mb-8">
+          <div className="flex items-center">
+            <button
+              onClick={() => onQuantityChange(-1)}
+              className="md:px-6 px-2 py-4 hover:bg-gray-100 text-xl font-bold text-[#282828] dark:text-foreground"
+            >
+              −
+            </button>
+            <span className="px-4 py-3 text-lg font-medium text-[#282828] dark:text-foreground" >
+              {quantity}
+            </span>
+            <button
+              onClick={() => onQuantityChange(1)}
+              className="md:px-6 px-2 py-4 hover:bg-gray-100 text-xl font-bold text-[#282828] dark:text-foreground"
+            >
+              +
+            </button>
           </div>
-        )}
-      </div>
+          
+          <button 
+            onClick={handleAddToBag}
+            disabled={isSelectedVariantOutOfStock}
+            className={`md:px-20 px-10 py-4 text-white text-sm font-light transition-opacity flex items-center gap-2 ${
+              isSelectedVariantOutOfStock 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'hover:opacity-90'
+            }`}
+            style={!isSelectedVariantOutOfStock ? {backgroundColor: '#282828'} : {}}
+          >
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 15.75C1.0875 15.75 0.73425 15.6033 0.44025 15.3097C0.14675 15.0157 0 14.6625 0 14.25V5.25C0 4.8375 0.14675 4.4845 0.44025 4.191C0.73425 3.897 1.0875 3.75 1.5 3.75H3C3 2.7125 3.36575 1.828 4.09725 1.0965C4.82825 0.3655 5.7125 0 6.75 0C7.7875 0 8.672 0.3655 9.4035 1.0965C10.1345 1.828 10.5 2.7125 10.5 3.75H12C12.4125 3.75 12.7657 3.897 13.0597 4.191C13.3533 4.4845 13.5 4.8375 13.5 5.25V14.25C13.5 14.6625 13.3533 15.0157 13.0597 15.3097C12.7657 15.6033 12.4125 15.75 12 15.75H1.5ZM1.5 14.25H12V5.25H1.5V14.25ZM6.75 9.75C7.7875 9.75 8.672 9.38425 9.4035 8.65275C10.1345 7.92175 10.5 7.0375 10.5 6H9C9 6.625 8.78125 7.15625 8.34375 7.59375C7.90625 8.03125 7.375 8.25 6.75 8.25C6.125 8.25 5.59375 8.03125 5.15625 7.59375C4.71875 7.15625 4.5 6.625 4.5 6H3C3 7.0375 3.36575 7.92175 4.09725 8.65275C4.82825 9.38425 5.7125 9.75 6.75 9.75ZM4.5 3.75H9C9 3.125 8.78125 2.59375 8.34375 2.15625C7.90625 1.71875 7.375 1.5 6.75 1.5C6.125 1.5 5.59375 1.71875 5.15625 2.15625C4.71875 2.59375 4.5 3.125 4.5 3.75Z" fill="white"/>
+            </svg>
+            {isSelectedVariantOutOfStock ? 'OUT OF STOCK - SELECT OTHER SIZE' : 'ADD TO BAG'}
+          </button>
+          
+          {hasLowStock && !isSelectedVariantOutOfStock && (
+            <div className="text-sm text-orange-600 mt-2">
+              ⚠️ Only {selectedVariantData.stock} items left in stock
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

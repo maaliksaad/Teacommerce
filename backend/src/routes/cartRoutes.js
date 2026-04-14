@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cartController');
 const authMiddleware = require('../middlewares/auth.middleware');
+const roleMiddleware = require('../middlewares/roleMiddleware');
 
 router.use(authMiddleware);
+router.use(roleMiddleware('user'));
 
 /**
  * @swagger
